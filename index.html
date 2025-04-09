@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gemini AI - Enhanced Redesign</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <script defer>
+    // Typing Effect
+    function typeEffect(element, text, speed = 50) {
+      let i = 0;
+      function type() {
+        if (i < text.length) {
+          element.innerHTML += text.charAt(i);
+          i++;
+          setTimeout(type, speed);
+        }
+      }
+      type();
+    }
+
+    // Voice Input
+    function startListening() {
+      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.lang = 'en-US';
+      recognition.start();
+      recognition.onresult = (e) => {
+        document.getElementById("prompt").value = e.results[0][0].transcript;
+      };
+    }
+
+    // Theme Toggle
+    function toggleTheme() {
+      document.documentElement.classList.toggle("dark");
+    }
+
+    // Load Prompt History
+    function loadHistory() {
+      const history = JSON.parse(localStorage.getItem("geminiHistory")) || [];
+      const list = document.getElementById("historyList");
+      list.innerHTML = '';
+      history.forEach(prompt => {
+        const li = document.createElement("li");
+        li.className = "bg-gray-800 p-4 rounded-md shadow-sm";
+        li.textContent = prompt;
+        list.appendChild(li);
+      });
+    }
+
+    // Save Prompt
+    function savePrompt() {
+      const prompt = document.getElementById("prompt").value;
+      if (!prompt) return;
+      const history = JSON.parse(localStorage.getItem("geminiHistory")) || [];
+      history.unshift(prompt);
+      localStorage.setItem("geminiHistory", JSON.stringify(history.slice(0, 5)));
+      loadHistory();
+
+      const responseBox = document.getElementById("ai-response");
+      responseBox.innerHTML = "";
+      typeEffect(responseBox, "This is a generated AI response to: " + prompt);
+    }
+
+    window.onload = () => loadHistory();
+  </script>
+  <style>
+    .dark body { background-color: #0f172a; color: white; }
+    .transition-colors { transition: background-color 0.3s, color 0.3s; }
+  </style>
+</head>
+<body class="bg-gray-950 text-white font-sans min-h-screen flex flex-col transition-colors">
+
+  <!-- Header -->
+  <header class="bg-gradient-to-r from-blue-600 to-purple-600 p-6 shadow-md">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <h1 class="text-3xl font-bold">Gemini AI</h1>
+      <div class="space-x-2">
+        <button onclick="toggleTheme()" class="bg-white text-black px-4 py-2 rounded-full hover:bg-gray-200 font-medium transition">Toggle Theme</button>
+        <button onclick="startListening()" class="bg-black text-white px-4 py-2 rounded-full border border-white hover:bg-white hover:text-black transition">🎤</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Animation -->
+  <section class="flex justify-center mt-6">
+    <lottie-player src="https://assets1.lottiefiles.com/packages/lf20_jcikwtux.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></lottie-player>
+  </section>
+
+  <!-- Main Section -->
+  <main class="flex-grow max-w-4xl mx-auto px-6">
+    <section class="text-center mb-10">
+      <h2 class="text-4xl font-extrabold mb-4">Welcome to the Future of AI</h2>
+      <p class="text-gray-300 text-lg">Talk to Gemini. Type, speak, or prompt your way into the future.</p>
+    </section>
+
+    <!-- Prompt Input Section -->
+    <section class="bg-gray-800 p-6 rounded-xl shadow-xl">
+      <label for="prompt" class="block text-sm text-gray-300 mb-2 font-semibold">Ask anything</label>
+      <textarea id="prompt" rows="3" class="w-full p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 focus:outline-none" placeholder="e.g. What's the future of quantum computing?"></textarea>
+      <button onclick="savePrompt()" class="mt-4 bg-purple-600 hover:bg-purple-700 px-6 py-2 rounded-lg transition font-semibold">Generate</button>
+    </section>
+
+    <!-- AI Response -->
+    <div id="ai-response" class="mt-6 bg-black bg-opacity-50 p-4 rounded-lg font-mono text-green-400 shadow-inner"></div>
+
+    <!-- Recent Prompts -->
+    <section class="mt-10">
+      <h3 class="text-2xl font-semibold mb-4">Recent Interactions</h3>
+      <ul id="historyList" class="space-y-3"></ul>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="p-6 text-center text-sm text-gray-400 mt-20">
+    © 2025 Gemini AI. Built with ✨
+  </footer>
+</body>
+</html>
