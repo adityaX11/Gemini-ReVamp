@@ -17,7 +17,8 @@ Redesign the Gemini AI interface using modern tools with creativity, interactivi
 - Dark mode aesthetic
 - Tailwind-based UI (generated via prompting)
 - Animation for good looking UI/UX
-- Add voice control
+- Add voice controller
+- Add theme controller
 
 ##  How to Run Locally
 1. Clone this repo or download the ZIP
