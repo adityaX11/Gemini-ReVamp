@@ -32,3 +32,6 @@ Use any of the following (drag & drop `index.html`):
 
 ##  Made With
     by a passionate dev & AI with  Gemini Vibes
+    Aditya Kumar
+## Wedsite link:
+   https://gemini-re-vamp.vercel.app/
